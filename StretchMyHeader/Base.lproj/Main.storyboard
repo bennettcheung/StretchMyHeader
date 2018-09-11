@@ -83,9 +83,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <view key="tableHeaderView" clipsSubviews="YES" contentMode="scaleAspectFit" id="dzI-V6-4lm">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="211"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" image="header_image" translatesAutoresizingMaskIntoConstraints="NO" id="d8e-LX-zyA">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43"/>
+                                </imageView>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="September 10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z0V-BC-mpk">
+                                    <rect key="frame" x="8" y="8" width="138" height="21"/>
+                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                    <color key="textColor" red="0.95389116993152556" green="1" blue="0.9583805865069206" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="trailing" secondItem="d8e-LX-zyA" secondAttribute="trailing" id="Dhc-sy-oaa"/>
+                                <constraint firstItem="z0V-BC-mpk" firstAttribute="leading" secondItem="dzI-V6-4lm" secondAttribute="leading" constant="8" id="Dnl-JM-Dds"/>
+                                <constraint firstItem="d8e-LX-zyA" firstAttribute="leading" secondItem="dzI-V6-4lm" secondAttribute="leading" id="Rsi-x7-vIG"/>
+                                <constraint firstItem="z0V-BC-mpk" firstAttribute="top" secondItem="dzI-V6-4lm" secondAttribute="top" constant="8" id="ZXg-ff-Qfm"/>
+                                <constraint firstAttribute="bottom" secondItem="d8e-LX-zyA" secondAttribute="bottom" id="aXf-0M-oyb"/>
+                                <constraint firstItem="d8e-LX-zyA" firstAttribute="top" secondItem="dzI-V6-4lm" secondAttribute="top" id="wA7-Iy-R0U"/>
+                            </constraints>
+                        </view>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="85" id="WCw-Qf-5nD" customClass="HeadlineTableViewCell" customModule="StretchMyHeader" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="85"/>
+                                <rect key="frame" x="0.0" y="239" width="375" height="85"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="WCw-Qf-5nD" id="37f-cq-3Eg">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="84.5"/>
@@ -98,7 +122,7 @@
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Headline" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mRT-7x-sy8">
-                                            <rect key="frame" x="16" y="40" width="77.5" height="24"/>
+                                            <rect key="frame" x="16" y="40" width="333" height="24"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -106,6 +130,7 @@
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="mRT-7x-sy8" firstAttribute="leading" secondItem="37f-cq-3Eg" secondAttribute="leadingMargin" id="5f1-lz-7bG"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="mRT-7x-sy8" secondAttribute="trailing" constant="10" id="qCc-Vl-QhB"/>
                                         <constraint firstItem="2H7-v1-Dc7" firstAttribute="top" secondItem="37f-cq-3Eg" secondAttribute="topMargin" id="sO6-wN-G6N"/>
                                         <constraint firstAttribute="bottomMargin" secondItem="mRT-7x-sy8" secondAttribute="bottom" constant="10" id="ske-lT-nYB"/>
                                         <constraint firstItem="mRT-7x-sy8" firstAttribute="top" secondItem="2H7-v1-Dc7" secondAttribute="bottom" constant="8" id="tkU-67-gdV"/>
@@ -127,6 +152,10 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Master" id="Zdf-7t-Un8"/>
+                    <connections>
+                        <outlet property="dateLabel" destination="z0V-BC-mpk" id="bTb-W8-IMN"/>
+                        <outlet property="headerView" destination="dzI-V6-4lm" id="Wtk-Cc-s4j"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Rux-fX-hf1" sceneMemberID="firstResponder"/>
             </objects>
@@ -149,6 +178,9 @@
             <point key="canvasLocation" x="-45" y="129"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="header_image" width="621" height="412"/>
+    </resources>
     <inferredMetricsTieBreakers>
         <segue reference="6S0-TO-JiA"/>
     </inferredMetricsTieBreakers>

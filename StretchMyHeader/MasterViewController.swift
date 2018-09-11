@@ -12,8 +12,11 @@ class MasterViewController: UITableViewController {
 
   var detailViewController: DetailViewController? = nil
   var newsItems = [NewsItem]()
-
-
+  private let kTableHeaderHeight: CGFloat = 300.0
+  @IBOutlet weak var headerView: UIView!
+  
+  @IBOutlet weak var dateLabel: UILabel!
+  
   override func viewDidLoad() {
     super.viewDidLoad()
     // Do any additional setup after loading the view, typically from a nib.
@@ -25,7 +28,15 @@ class MasterViewController: UITableViewController {
         let controllers = split.viewControllers
         detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
     }
+    tableView.tableHeaderView  = nil
     
+    setCurrentDate()
+    
+    tableView.addSubview(headerView)
+
+    tableView.contentInset = UIEdgeInsets(top: kTableHeaderHeight, left: 0, bottom: 0, right: 0)
+    tableView.contentOffset = CGPoint(x: 0, y: -kTableHeaderHeight)
+
     loadSampleItems()
   }
 
@@ -33,8 +44,16 @@ class MasterViewController: UITableViewController {
     clearsSelectionOnViewWillAppear = splitViewController!.isCollapsed
     super.viewWillAppear(animated)
   }
+  
+  private func setCurrentDate(){
+    let formatter = DateFormatter()
+    formatter.dateFormat = "MMMM dd"
+    dateLabel.text = formatter.string(from: Date())
+    print ("Current date is \(dateLabel.text)")
+  }
 
   private func loadSampleItems(){
+    
     newsItems = [ NewsItem(category: NewsItemCategory.World,
                            headline: "Climate change protests, divestments meet fossil fuels realities"),
                   NewsItem(category: NewsItemCategory.Europe, headline: "Scotland's 'Yes' leader says independence vote is 'once in a lifetime'"),
@@ -114,5 +133,29 @@ class MasterViewController: UITableViewController {
     return 100
   }
 
+  
+  
+  // MARK: Private functions
+  
+  func updateHeaderView(){
+    var headerRect = CGRect(x: 0, y: -kTableHeaderHeight, width: tableView.bounds.width, height: kTableHeaderHeight)
+    if tableView.contentOffset.y < kTableHeaderHeight{
+      headerRect.origin.y = tableView.contentOffset.y
+      headerRect.size.height = -tableView.contentOffset.y
+    }
+    
+    headerView.frame = headerRect
+  }
+  
+}
+
+extension MasterViewController {
+  
+  
+  // MARK : Scroll view functions
+  
+  override func scrollViewDidScroll(_ scrollView: UIScrollView) {
+    updateHeaderView()
+  }
 }
 
