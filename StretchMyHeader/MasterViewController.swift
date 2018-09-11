@@ -11,7 +11,7 @@ import UIKit
 class MasterViewController: UITableViewController {
 
   var detailViewController: DetailViewController? = nil
-  var objects = [Any]()
+  var newsItems = [NewsItem]()
 
 
   override func viewDidLoad() {
@@ -25,6 +25,8 @@ class MasterViewController: UITableViewController {
         let controllers = split.viewControllers
         detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
     }
+    
+    loadSampleItems()
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -32,14 +34,24 @@ class MasterViewController: UITableViewController {
     super.viewWillAppear(animated)
   }
 
-  override func didReceiveMemoryWarning() {
-    super.didReceiveMemoryWarning()
-    // Dispose of any resources that can be recreated.
-  }
+  private func loadSampleItems(){
+    newsItems = [ NewsItem(category: NewsItemCategory.World,
+                           headline: "Climate change protests, divestments meet fossil fuels realities"),
+                  NewsItem(category: NewsItemCategory.Europe, headline: "Scotland's 'Yes' leader says independence vote is 'once in a lifetime'"),
+                  NewsItem(category: NewsItemCategory.MiddleEast, headline: "Airstrikes boost Islamic State, FBI director warns more hostages possible"),
+                  NewsItem(category: NewsItemCategory.Africa, headline: "Nigeria says 70 dead in building collapse; questions S. Africa victim claim"),
+                  NewsItem(category: NewsItemCategory.AsiaPacific, headline: "Despite UN ruling, Japan seeks backing for whale hunting"),
+                  NewsItem(category: NewsItemCategory.Americas, headline: "Officials: FBI is tracking 100 Americans who fought alongside IS in Syria"),
+                  NewsItem(category: NewsItemCategory.World, headline: "South Africa in $40 billion deal for Russian nuclear reactors"),
+                  NewsItem(category: NewsItemCategory.Europe, headline: "'One million babies' created by EU student exchanges")
+    ]
 
+  }
+  
+  
   @objc
   func insertNewObject(_ sender: Any) {
-    objects.insert(NSDate(), at: 0)
+    newsItems.insert(NewsItem(category: NewsItemCategory.Americas, headline: "Some headline"), at: 0)
     let indexPath = IndexPath(row: 0, section: 0)
     tableView.insertRows(at: [indexPath], with: .automatic)
   }
@@ -49,9 +61,9 @@ class MasterViewController: UITableViewController {
   override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
     if segue.identifier == "showDetail" {
         if let indexPath = tableView.indexPathForSelectedRow {
-            let object = objects[indexPath.row] as! NSDate
+            let newsitem = newsItems[indexPath.row]
             let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
-            controller.detailItem = object
+            controller.detailItem = newsitem
             controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
             controller.navigationItem.leftItemsSupplementBackButton = true
         }
@@ -65,14 +77,18 @@ class MasterViewController: UITableViewController {
   }
 
   override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return objects.count
+    return newsItems.count
   }
 
   override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+    guard let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? HeadlineTableViewCell else{
+      print("Issue dequeueing proper type of cell")
+      return UITableViewCell()
+    }
 
-    let object = objects[indexPath.row] as! NSDate
-    cell.textLabel!.text = object.description
+    let newsitem = newsItems[indexPath.row]
+    cell.categoryLabel!.text = newsitem.category.rawValue
+    cell.headlineLabel!.text = newsitem.headline
     return cell
   }
 
@@ -83,13 +99,20 @@ class MasterViewController: UITableViewController {
 
   override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
     if editingStyle == .delete {
-        objects.remove(at: indexPath.row)
+        newsItems.remove(at: indexPath.row)
         tableView.deleteRows(at: [indexPath], with: .fade)
     } else if editingStyle == .insert {
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     }
   }
 
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    return UITableViewAutomaticDimension
+  }
+  
+  override func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+    return 100
+  }
 
 }
 
